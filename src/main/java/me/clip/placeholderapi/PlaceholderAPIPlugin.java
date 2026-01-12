@@ -32,7 +32,6 @@ import me.clip.placeholderapi.expansion.manager.LocalExpansionManager;
 import me.clip.placeholderapi.listeners.ServerLoadEventListener;
 import me.clip.placeholderapi.scheduler.UniversalScheduler;
 import me.clip.placeholderapi.scheduler.scheduling.schedulers.TaskScheduler;
-import me.clip.placeholderapi.updatechecker.UpdateChecker;
 import me.clip.placeholderapi.util.ExpansionSafetyCheck;
 import me.clip.placeholderapi.util.Msg;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
@@ -54,32 +53,8 @@ import org.jetbrains.annotations.NotNull;
 public final class PlaceholderAPIPlugin extends JavaPlugin {
 
   @NotNull
-  private static final Version VERSION;
+  private static final Version VERSION = new Version("1.21.1", false);
   private static PlaceholderAPIPlugin instance;
-
-  static {
-    String version = Bukkit.getServer().getBukkitVersion().split("-")[0];
-    String suffix;
-    if (version.chars()
-            .filter(c -> c == '.')
-            .count() == 1) {
-      suffix = "R1";
-      version = 'v' + version.replace('.', '_') + '_' + suffix;
-    } else {
-      int minor = Integer.parseInt(version.split("\\.")[2].charAt(0) + "");
-      version = 'v' + version.replace('.', '_').replace("_" + minor, "") + '_' + "R" + (minor - 1);
-    }
-
-    boolean isSpigot;
-    try {
-      Class.forName("org.spigotmc.SpigotConfig");
-      isSpigot = true;
-    } catch (final ExceptionInInitializerError | ClassNotFoundException ignored) {
-      isSpigot = false;
-    }
-
-    VERSION = new Version(version, isSpigot);
-  }
 
   @NotNull
   private final PlaceholderAPIConfig config = new PlaceholderAPIConfig(this);
@@ -94,10 +69,11 @@ public final class PlaceholderAPIPlugin extends JavaPlugin {
   private BukkitAudiences adventure;
   private boolean safetyCheck = false;
 
-
   /**
-   * Gets the static instance of the main class for PlaceholderAPI. This class is not the actual API
-   * class, this is the main class that extends JavaPlugin. For most API methods, use static methods
+   * Gets the static instance of the main class for PlaceholderAPI. This class is
+   * not the actual API
+   * class, this is the main class that extends JavaPlugin. For most API methods,
+   * use static methods
    * available from the class: {@link PlaceholderAPI}
    *
    * @return PlaceholderAPIPlugin instance
@@ -108,7 +84,8 @@ public final class PlaceholderAPIPlugin extends JavaPlugin {
   }
 
   /**
-   * Get the configurable {@linkplain String} value that should be returned when a boolean is true
+   * Get the configurable {@linkplain String} value that should be returned when a
+   * boolean is true
    *
    * @return string value of true
    */
@@ -118,7 +95,8 @@ public final class PlaceholderAPIPlugin extends JavaPlugin {
   }
 
   /**
-   * Get the configurable {@linkplain String} value that should be returned when a boolean is false
+   * Get the configurable {@linkplain String} value that should be returned when a
+   * boolean is false
    *
    * @return string value of false
    */
@@ -128,7 +106,8 @@ public final class PlaceholderAPIPlugin extends JavaPlugin {
   }
 
   /**
-   * Get the configurable {@linkplain SimpleDateFormat} object that is used to parse time for
+   * Get the configurable {@linkplain SimpleDateFormat} object that is used to
+   * parse time for
    * generic time based placeholders
    *
    * @return date format
@@ -178,9 +157,7 @@ public final class PlaceholderAPIPlugin extends JavaPlugin {
       getCloudExpansionManager().load();
     }
 
-    if (config.checkUpdates()) {
-      new UpdateChecker(this).fetch();
-    }
+    // UpdateChecker disabled for custom fork
   }
 
   @Override
@@ -228,7 +205,7 @@ public final class PlaceholderAPIPlugin extends JavaPlugin {
 
   @NotNull
   public BukkitAudiences getAdventure() {
-    if(adventure == null) {
+    if (adventure == null) {
       throw new IllegalStateException("Tried to access Adventure when the plugin was disabled!");
     }
 

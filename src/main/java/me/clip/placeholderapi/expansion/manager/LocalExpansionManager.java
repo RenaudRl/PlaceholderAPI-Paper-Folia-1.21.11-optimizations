@@ -47,7 +47,6 @@ import me.clip.placeholderapi.expansion.Cleanable;
 import me.clip.placeholderapi.expansion.Configurable;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.clip.placeholderapi.expansion.Taskable;
-import me.clip.placeholderapi.expansion.VersionSpecific;
 import me.clip.placeholderapi.expansion.cloud.CloudExpansion;
 import me.clip.placeholderapi.util.FileUtil;
 import me.clip.placeholderapi.util.Futures;
@@ -72,10 +71,11 @@ public final class LocalExpansionManager implements Listener {
   private static final String EXPANSIONS_FOLDER_NAME = "expansions";
 
   @NotNull
-  private static final Set<MethodSignature> ABSTRACT_EXPANSION_METHODS = Arrays.stream(PlaceholderExpansion.class.getDeclaredMethods())
-          .filter(method -> Modifier.isAbstract(method.getModifiers()))
-          .map(method -> new MethodSignature(method.getName(), method.getParameterTypes()))
-          .collect(Collectors.toSet());
+  private static final Set<MethodSignature> ABSTRACT_EXPANSION_METHODS = Arrays
+      .stream(PlaceholderExpansion.class.getDeclaredMethods())
+      .filter(method -> Modifier.isAbstract(method.getModifiers()))
+      .map(method -> new MethodSignature(method.getName(), method.getParameterTypes()))
+      .collect(Collectors.toSet());
 
   @NotNull
   private final File folder;
@@ -85,7 +85,6 @@ public final class LocalExpansionManager implements Listener {
   @NotNull
   private final Map<String, PlaceholderExpansion> expansions = new ConcurrentHashMap<>();
   private final ReentrantLock expansionsLock = new ReentrantLock();
-
 
   public LocalExpansionManager(@NotNull final PlaceholderAPIPlugin plugin) {
     this.plugin = plugin;
@@ -103,7 +102,6 @@ public final class LocalExpansionManager implements Listener {
   public void kill() {
     unregisterAll();
   }
-
 
   @NotNull
   public File getExpansionsFolder() {
@@ -166,20 +164,19 @@ public final class LocalExpansionManager implements Listener {
     return Optional.ofNullable(getExpansion(identifier));
   }
 
-
   public Optional<PlaceholderExpansion> register(
       @NotNull final Class<? extends PlaceholderExpansion> clazz) {
     try {
       final PlaceholderExpansion expansion = createExpansionInstance(clazz);
-      
-      if(expansion == null){
+
+      if (expansion == null) {
         return Optional.empty();
       }
-      
+
       Objects.requireNonNull(expansion.getAuthor(), "The expansion author is null!");
       Objects.requireNonNull(expansion.getIdentifier(), "The expansion identifier is null!");
       Objects.requireNonNull(expansion.getVersion(), "The expansion version is null!");
-      
+
       if (expansion.getRequiredPlugin() != null && !expansion.getRequiredPlugin().isEmpty()) {
         if (!Bukkit.getPluginManager().isPluginEnabled(expansion.getRequiredPlugin())) {
           Msg.warn("Cannot load expansion %s due to a missing plugin: %s", expansion.getIdentifier(),
@@ -189,7 +186,7 @@ public final class LocalExpansionManager implements Listener {
       }
 
       expansion.setExpansionType(PlaceholderExpansion.Type.EXTERNAL);
-      
+
       if (!expansion.register()) {
         Msg.warn("Cannot load expansion %s due to an unknown issue.", expansion.getIdentifier());
         return Optional.empty();
@@ -204,7 +201,7 @@ public final class LocalExpansionManager implements Listener {
       } else {
         reason = " - One of its properties is null which is not allowed!";
       }
-      
+
       Msg.severe("Failed to load expansion class %s%s", ex, clazz.getSimpleName(), reason);
     }
 
@@ -213,6 +210,7 @@ public final class LocalExpansionManager implements Listener {
 
   /**
    * Attempt to register a {@link PlaceholderExpansion}
+   * 
    * @param expansion the expansion to register
    * @return if the expansion was registered
    */
@@ -262,14 +260,7 @@ public final class LocalExpansionManager implements Listener {
       }
     }
 
-    if (expansion instanceof VersionSpecific) {
-      VersionSpecific nms = (VersionSpecific) expansion;
-      if (!nms.isCompatibleWith(PlaceholderAPIPlugin.getServerVersion())) {
-        Msg.warn("Your server version is incompatible with expansion %s %s",
-            expansion.getIdentifier(), expansion.getVersion());
-        return false;
-      }
-    }
+    // VersionSpecific check removed for 1.21.1 fork optimization
 
     final PlaceholderExpansion removed = getExpansion(identifier);
     if (removed != null && !removed.unregister()) {
@@ -293,21 +284,22 @@ public final class LocalExpansionManager implements Listener {
     if (expansion instanceof Listener) {
       Bukkit.getPluginManager().registerEvents(((Listener) expansion), plugin);
     }
-    
+
     Msg.info(
-            "Successfully registered %s expansion: %s [%s]",
-            expansion.getExpansionType().name().toLowerCase(),
-            expansion.getIdentifier(),
-            expansion.getVersion()
-    );
+        "Successfully registered %s expansion: %s [%s]",
+        expansion.getExpansionType().name().toLowerCase(),
+        expansion.getIdentifier(),
+        expansion.getVersion());
 
     if (expansion instanceof Taskable) {
       ((Taskable) expansion).start();
     }
 
     // Check eCloud for updates only if the expansion is external
-    if (plugin.getPlaceholderAPIConfig().isCloudEnabled() && expansion.getExpansionType() == PlaceholderExpansion.Type.EXTERNAL) {
-      final Optional<CloudExpansion> cloudExpansionOptional = plugin.getCloudExpansionManager().findCloudExpansionByName(identifier);
+    if (plugin.getPlaceholderAPIConfig().isCloudEnabled()
+        && expansion.getExpansionType() == PlaceholderExpansion.Type.EXTERNAL) {
+      final Optional<CloudExpansion> cloudExpansionOptional = plugin.getCloudExpansionManager()
+          .findCloudExpansionByName(identifier);
       if (cloudExpansionOptional.isPresent()) {
         CloudExpansion cloudExpansion = cloudExpansionOptional.get();
         cloudExpansion.setHasExpansion(true);
@@ -357,7 +349,7 @@ public final class LocalExpansionManager implements Listener {
         Msg.severe("Failed to load class files of expansion.", exception);
         return;
       }
-      
+
       final List<PlaceholderExpansion> registered = classes.stream()
           .filter(Objects::nonNull)
           .map(this::register)
@@ -366,7 +358,8 @@ public final class LocalExpansionManager implements Listener {
           .collect(Collectors.toList());
 
       final long needsUpdate = registered.stream()
-          .map(expansion -> plugin.getCloudExpansionManager().findCloudExpansionByName(expansion.getName()).orElse(null))
+          .map(
+              expansion -> plugin.getCloudExpansionManager().findCloudExpansionByName(expansion.getName()).orElse(null))
           .filter(Objects::nonNull)
           .filter(CloudExpansion::shouldUpdate)
           .count();
@@ -375,7 +368,7 @@ public final class LocalExpansionManager implements Listener {
           .append(registered.size())
           .append(' ')
           .append("placeholder hook(s) registered!");
-      
+
       if (needsUpdate > 0) {
         message.append(' ')
             .append("&6")
@@ -383,8 +376,7 @@ public final class LocalExpansionManager implements Listener {
             .append(' ')
             .append("placeholder hook(s) have an update available.");
       }
-      
-      
+
       Msg.msg(sender, message.toString());
 
       Bukkit.getPluginManager().callEvent(new ExpansionsLoadedEvent(registered));
@@ -407,7 +399,7 @@ public final class LocalExpansionManager implements Listener {
     if (files == null) {
       return CompletableFuture.completedFuture(Collections.emptyList());
     }
-    
+
     return Arrays.stream(files)
         .map(this::findExpansionInFile)
         .collect(Futures.collector());
@@ -418,7 +410,8 @@ public final class LocalExpansionManager implements Listener {
       @NotNull final File file) {
     return CompletableFuture.supplyAsync(() -> {
       try {
-        final Class<? extends PlaceholderExpansion> expansionClass = FileUtil.findClass(file, PlaceholderExpansion.class);
+        final Class<? extends PlaceholderExpansion> expansionClass = FileUtil.findClass(file,
+            PlaceholderExpansion.class);
 
         if (expansionClass == null) {
           Msg.severe("Failed to load expansion %s, as it does not have a class which"
@@ -427,8 +420,8 @@ public final class LocalExpansionManager implements Listener {
         }
 
         Set<MethodSignature> expansionMethods = Arrays.stream(expansionClass.getDeclaredMethods())
-                .map(method -> new MethodSignature(method.getName(), method.getParameterTypes()))
-                .collect(Collectors.toSet());
+            .map(method -> new MethodSignature(method.getName(), method.getParameterTypes()))
+            .collect(Collectors.toSet());
         if (!expansionMethods.containsAll(ABSTRACT_EXPANSION_METHODS)) {
           Msg.severe("Failed to load expansion %s, as it does not have the required"
               + " methods declared for a PlaceholderExpansion.", file.getName());
@@ -446,7 +439,6 @@ public final class LocalExpansionManager implements Listener {
     });
   }
 
-
   @Nullable
   public PlaceholderExpansion createExpansionInstance(
       @NotNull final Class<? extends PlaceholderExpansion> clazz) throws LinkageError {
@@ -456,12 +448,11 @@ public final class LocalExpansionManager implements Listener {
       if (ex.getCause() instanceof LinkageError) {
         throw ((LinkageError) ex.getCause());
       }
-      
+
       Msg.warn("There was an issue with loading an expansion.");
       return null;
     }
   }
-
 
   @EventHandler
   public void onQuit(@NotNull final PlayerQuitEvent event) {

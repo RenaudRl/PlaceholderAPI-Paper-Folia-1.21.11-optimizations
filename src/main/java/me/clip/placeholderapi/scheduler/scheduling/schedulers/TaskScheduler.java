@@ -1,24 +1,21 @@
 /*
- * MIT License
+ * This file is part of PlaceholderAPI
  *
- * Copyright (c) 2023 Sevastjan
+ * PlaceholderAPI
+ * Copyright (c) 2015 - 2024 PlaceholderAPI Team
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * PlaceholderAPI free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * PlaceholderAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package me.clip.placeholderapi.scheduler.scheduling.schedulers;
@@ -36,7 +33,8 @@ import java.util.concurrent.Future;
 public interface TaskScheduler {
 
     /**
-     * <b>Folia</b>: Returns whether the current thread is ticking the global region <br>
+     * <b>Folia</b>: Returns whether the current thread is ticking the global region
+     * <br>
      * <b>Paper and Bukkit</b>: Returns {@link org.bukkit.Server#isPrimaryThread}
      */
     boolean isGlobalThread();
@@ -49,9 +47,12 @@ public interface TaskScheduler {
     }
 
     /**
-     * <b>Folia and Paper</b>: Returns whether the current thread is ticking a region and that the region
-     * being ticked owns the specified entity. Note that this function is the only appropriate method of
-     * checking for ownership of an entity, as retrieving the entity's location is undefined unless the
+     * <b>Folia and Paper</b>: Returns whether the current thread is ticking a
+     * region and that the region
+     * being ticked owns the specified entity. Note that this function is the only
+     * appropriate method of
+     * checking for ownership of an entity, as retrieving the entity's location is
+     * undefined unless the
      * entity is owned by the current region
      * <p>
      * <b>Bukkit</b>: returns {@link org.bukkit.Server#isPrimaryThread}
@@ -61,8 +62,10 @@ public interface TaskScheduler {
     boolean isEntityThread(Entity entity);
 
     /**
-     * <b>Folia and Paper</b>: Returns whether the current thread is ticking a region and that the region
-     * being ticked owns the chunk at the specified world and block position as included in the specified location
+     * <b>Folia and Paper</b>: Returns whether the current thread is ticking a
+     * region and that the region
+     * being ticked owns the chunk at the specified world and block position as
+     * included in the specified location
      * <p>
      * <b>Bukkit</b>: returns {@link org.bukkit.Server#isPrimaryThread}
      *
@@ -90,7 +93,8 @@ public interface TaskScheduler {
     MyScheduledTask runTaskLater(Runnable runnable, long delay);
 
     /**
-     * Schedules a repeating task to be executed after the initial delay with the specified period <br>
+     * Schedules a repeating task to be executed after the initial delay with the
+     * specified period <br>
      * <b>Folia and Paper</b>: ...on the global region <br>
      * <b>Bukkit</b>: ...on the main thread
      *
@@ -125,7 +129,8 @@ public interface TaskScheduler {
     }
 
     /**
-     * <b>Folia and Paper</b>: Schedules a task to be executed on the region which owns the location on the next tick
+     * <b>Folia and Paper</b>: Schedules a task to be executed on the region which
+     * owns the location on the next tick
      * <p>
      * <b>Bukkit</b>: same as {@link #runTask(Runnable)}
      *
@@ -137,7 +142,8 @@ public interface TaskScheduler {
     }
 
     /**
-     * <b>Folia and Paper</b>: Schedules a task to be executed on the region which owns the location after the
+     * <b>Folia and Paper</b>: Schedules a task to be executed on the region which
+     * owns the location after the
      * specified delay in ticks
      * <p>
      * <b>Bukkit</b>: same as {@link #runTaskLater(Runnable, long)}
@@ -151,7 +157,8 @@ public interface TaskScheduler {
     }
 
     /**
-     * <b>Folia and Paper</b>: Schedules a repeating task to be executed on the region which owns the location
+     * <b>Folia and Paper</b>: Schedules a repeating task to be executed on the
+     * region which owns the location
      * after the initial delay with the specified period
      * <p>
      * <b>Bukkit</b>: same as {@link #runTaskTimer(Runnable, long, long)}
@@ -190,7 +197,8 @@ public interface TaskScheduler {
     }
 
     /**
-     * <b>Folia and Paper</b>: Schedules a task to be executed on the region which owns the location
+     * <b>Folia and Paper</b>: Schedules a task to be executed on the region which
+     * owns the location
      * of given entity on the next tick
      * <p>
      * <b>Bukkit</b>: same as {@link #runTask(Runnable)}
@@ -203,7 +211,8 @@ public interface TaskScheduler {
     }
 
     /**
-     * <b>Folia and Paper</b>: Schedules a task to be executed on the region which owns the location
+     * <b>Folia and Paper</b>: Schedules a task to be executed on the region which
+     * owns the location
      * of given entity after the specified delay in ticks
      * <p>
      * <b>Bukkit</b>: same as {@link #runTaskLater(Runnable, long)}
@@ -217,7 +226,8 @@ public interface TaskScheduler {
     }
 
     /**
-     * <b>Folia and Paper</b>: Schedules a repeating task to be executed on the region which owns the
+     * <b>Folia and Paper</b>: Schedules a repeating task to be executed on the
+     * region which owns the
      * location of given entity after the initial delay with the specified period
      * <p>
      * <b>Bukkit</b>: same as {@link #runTaskTimer(Runnable, long, long)}
@@ -240,7 +250,8 @@ public interface TaskScheduler {
     MyScheduledTask runTaskAsynchronously(Runnable runnable);
 
     /**
-     * Schedules the specified task to be executed asynchronously after the time delay has passed
+     * Schedules the specified task to be executed asynchronously after the time
+     * delay has passed
      *
      * @param runnable The task to execute
      * @param delay    The time delay to pass before the task should be executed
@@ -249,12 +260,15 @@ public interface TaskScheduler {
     MyScheduledTask runTaskLaterAsynchronously(Runnable runnable, long delay);
 
     /**
-     * Schedules the specified task to be executed asynchronously after the initial delay has passed,
+     * Schedules the specified task to be executed asynchronously after the initial
+     * delay has passed,
      * and then periodically executed with the specified period
      *
      * @param runnable The task to execute
-     * @param delay    The time delay to pass before the first execution of the task, in ticks
-     * @param period   The time between task executions after the first execution of the task, in ticks
+     * @param delay    The time delay to pass before the first execution of the
+     *                 task, in ticks
+     * @param period   The time between task executions after the first execution of
+     *                 the task, in ticks
      * @return The {@link MyScheduledTask} that represents the scheduled task
      */
     MyScheduledTask runTaskTimerAsynchronously(Runnable runnable, long delay, long period);
@@ -284,12 +298,14 @@ public interface TaskScheduler {
     }
 
     /**
-     * Calls a method on the main thread and returns a Future object. This task will be executed
+     * Calls a method on the main thread and returns a Future object. This task will
+     * be executed
      * by the main(Bukkit)/global(FoliaandPaper) server thread.
      * <p>
      * Note: The Future.get() methods must NOT be called from the main thread.
      * <p>
-     * Note2: There is at least an average of 10ms latency until the isDone() method returns true.
+     * Note2: There is at least an average of 10ms latency until the isDone() method
+     * returns true.
      *
      * @param task Task to be executed
      */
@@ -323,7 +339,8 @@ public interface TaskScheduler {
     }
 
     /**
-     * Schedules a task to be executed on the region which owns the location of given entity
+     * Schedules a task to be executed on the region which owns the location of
+     * given entity
      *
      * @param entity   The entity which location the region executing should own
      * @param runnable The task to execute

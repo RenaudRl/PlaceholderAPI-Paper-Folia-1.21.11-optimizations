@@ -1,42 +1,32 @@
 /*
- * MIT License
+ * This file is part of PlaceholderAPI
  *
- * Copyright (c) 2023 Sevastjan
+ * PlaceholderAPI
+ * Copyright (c) 2015 - 2024 PlaceholderAPI Team
  *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the "Software"),
- * to deal in the Software without restriction, including without limitation
- * the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the
- * Software is furnished to do so, subject to the following conditions:
+ * PlaceholderAPI free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  *
- * The above copyright notice and this permission notice shall be included in
- * all copies or substantial portions of the Software.
+ * PlaceholderAPI is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
- * INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
- * PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
- * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
 package me.clip.placeholderapi.scheduler;
 
-import me.clip.placeholderapi.scheduler.bukkit.BukkitScheduler;
 import me.clip.placeholderapi.scheduler.folia.FoliaScheduler;
-import me.clip.placeholderapi.scheduler.paper.PaperScheduler;
 import me.clip.placeholderapi.scheduler.scheduling.schedulers.TaskScheduler;
-import me.clip.placeholderapi.scheduler.utils.JavaUtil;
 import org.bukkit.plugin.Plugin;
 
 public class UniversalScheduler {
-    private static final boolean IS_FOLIA = JavaUtil.classExists("io.papermc.paper.threadedregions.RegionizedServer");
-    private static final boolean IS_CANVAS = JavaUtil.classExists("io.canvasmc.canvas.server.ThreadedServer");
-    private static final boolean IS_EXPANDED_SCHEDULING_AVAILABLE = JavaUtil.classExists("io.papermc.paper.threadedregions.scheduler.ScheduledTask");
-
     public static TaskScheduler getScheduler(Plugin plugin) {
-        return IS_FOLIA || IS_CANVAS ? new FoliaScheduler(plugin) : (IS_EXPANDED_SCHEDULING_AVAILABLE ? new PaperScheduler(plugin) : new BukkitScheduler(plugin));
+        return new FoliaScheduler(plugin);
     }
 
 }
