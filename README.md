@@ -10,6 +10,7 @@
 - **Java 21**: Compiled for Java 21 to leverage the latest JVM optimizations and language features.
 - **Debloated**: Slashed legacy compatibility code, removing NMS version checks (1.7 - 1.20) and Spigot-specific update checkers.
 - **Optimized**: Streamlined startup and expansion loading for modern environments.
+- **Internalized Expansions**: `Math` and `Formatter` expansions are now built-in, removing external dependencies and ensuring compatibility.
 
 ## Requirements
 

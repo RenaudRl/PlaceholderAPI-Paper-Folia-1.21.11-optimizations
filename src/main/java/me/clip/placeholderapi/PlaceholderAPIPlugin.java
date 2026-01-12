@@ -260,6 +260,10 @@ public final class PlaceholderAPIPlugin extends JavaPlugin {
   private void setupExpansions() {
     Bukkit.getPluginManager().registerEvents(getLocalExpansionManager(), this);
 
+    // Register internalized expansions
+    getLocalExpansionManager().register(new me.clip.placeholderapi.expansion.internal.math.MathExpansion());
+    getLocalExpansionManager().register(new me.clip.placeholderapi.expansion.internal.formatter.FormatterExpansion());
+
     try {
       Class.forName("org.bukkit.event.server.ServerLoadEvent");
       new ServerLoadEventListener(this);

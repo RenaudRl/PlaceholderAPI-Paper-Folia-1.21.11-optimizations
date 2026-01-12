@@ -26,6 +26,7 @@ repositories {
 dependencies {
     implementation("org.bstats:bstats-bukkit:3.0.1")
     implementation("net.kyori:adventure-platform-bukkit:4.3.3")
+    implementation("com.ezylang:EvalEx:3.4.0")
 
     compileOnly("dev.folia:folia-api:1.21.11-R0.1-SNAPSHOT")
     compileOnlyApi("org.jetbrains:annotations:23.0.0")
@@ -92,6 +93,7 @@ tasks {
 
         relocate("org.bstats", "me.clip.placeholderapi.metrics")
         relocate("net.kyori", "me.clip.placeholderapi.libs.kyori")
+        relocate("com.ezylang.evalex", "me.clip.placeholderapi.libs.evalex")
 
         exclude("META-INF/versions/**")
     }
