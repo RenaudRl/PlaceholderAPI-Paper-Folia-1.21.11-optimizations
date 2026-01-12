@@ -82,6 +82,9 @@ public final class ExpansionSafetyCheck {
 
         for (File file : expansionsFolder.listFiles()) {
             try {
+                if (file.isDirectory()) {
+                    continue;
+                }
                 final String hash = Hashing.sha256().hashBytes(Files.asByteSource(file).read()).toString();
 
                 if (knownMaliciousExpansions.contains(hash)) {

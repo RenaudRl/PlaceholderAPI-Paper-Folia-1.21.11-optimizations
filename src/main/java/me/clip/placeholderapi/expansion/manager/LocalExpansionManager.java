@@ -166,6 +166,12 @@ public final class LocalExpansionManager implements Listener {
 
   public Optional<PlaceholderExpansion> register(
       @NotNull final Class<? extends PlaceholderExpansion> clazz) {
+    if (clazz.getName().equals("ch.andre601.mathexpansion.MathExpansion")
+        || clazz.getName().equals("ch.andre601.formatterexpansion.FormatterExpansion")) {
+      Msg.warn("Legacy expansion %s detected and ignored. Use the internal version instead.",
+          clazz.getSimpleName());
+      return Optional.empty();
+    }
     try {
       final PlaceholderExpansion expansion = createExpansionInstance(clazz);
 
