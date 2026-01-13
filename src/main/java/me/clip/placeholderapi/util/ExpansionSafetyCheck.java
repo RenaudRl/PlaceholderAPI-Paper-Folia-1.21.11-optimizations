@@ -82,7 +82,7 @@ public final class ExpansionSafetyCheck {
 
         for (File file : expansionsFolder.listFiles()) {
             try {
-                if (file.isDirectory()) {
+                if (file.isDirectory() || file.getName().equals("libraries")) {
                     continue;
                 }
                 final String hash = Hashing.sha256().hashBytes(Files.asByteSource(file).read()).toString();
@@ -91,6 +91,9 @@ public final class ExpansionSafetyCheck {
                     maliciousPaths.add(file.getAbsolutePath());
                 }
             } catch (Exception e) {
+                if (e instanceof java.io.FileNotFoundException && file.isDirectory()) {
+                    continue; // Double check if it's a directory that skipped the first check or became one
+                }
                 main.getLogger().log(Level.SEVERE, "Error occurred while trying to read " + file.getAbsolutePath(), e);
             }
         }
