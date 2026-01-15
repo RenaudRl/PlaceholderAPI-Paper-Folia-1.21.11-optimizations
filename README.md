@@ -2,13 +2,13 @@
 
 ![Java Version](https://img.shields.io/badge/Java-21-orange)
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
-![Target](https://img.shields.io/badge/Target-Folia%20/%20Paper-blue)
+![Target](https://img.shields.io/badge/Target-BTC--CORE%20%2F%20Folia%20%2F%20Paper-blue)
 
 **PlaceholderAPI** is a high-performance, strictly optimized fork of **ExtendedClip's PlaceholderAPI**, engineered specifically for the **BTC Studio** infrastructure. This fork drops support for legacy platforms (Spigot, Bukkit, older NMS) to provide native, blazingly fast integration with **Paper** and **Folia**.
 
 > [!WARNING]
 > **PLATFORM COMPATIBILITY NOTICE**
-> This fork is **STRICTLY** for Paper 1.21.11+ and Folia 1.21.11+. Legacy compatibility layers have been removed to maximize performance. If you are not running modern Paper/Folia, this plugin **will not function**.
+> This fork is **STRICTLY** for Paper 1.21.11+, Folia 1.21.11+ and **BTC-CORE**. Legacy compatibility layers have been removed to maximize performance. If you are not running modern Paper/Folia/BTC-CORE, this plugin **will not function**.
 
 ---
 

@@ -34,6 +34,7 @@ import me.clip.placeholderapi.scheduler.UniversalScheduler;
 import me.clip.placeholderapi.scheduler.scheduling.schedulers.TaskScheduler;
 import me.clip.placeholderapi.util.ExpansionSafetyCheck;
 import me.clip.placeholderapi.util.Msg;
+import me.clip.placeholderapi.util.Platform;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import org.bstats.bukkit.Metrics;
 import org.bstats.charts.AdvancedPie;
@@ -155,6 +156,11 @@ public final class PlaceholderAPIPlugin extends JavaPlugin {
 
     if (config.isCloudEnabled()) {
       getCloudExpansionManager().load();
+    }
+
+    Msg.info("Server Platform: %s", Platform.getPlatformName());
+    if (Platform.isBTCCore()) {
+      Msg.info("Running on BTC-CORE fork - All optimizations active!");
     }
 
     // UpdateChecker disabled for custom fork
